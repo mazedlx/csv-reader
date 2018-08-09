@@ -33,7 +33,12 @@ class CsvImport extends Command
                 $this->task("Transforming " . $file, function () use ($file) {
                     $importFile = fopen(base_path('files/' . $file), 'r');
                     $newFile = fopen(base_path('exports/' . $file), 'w+');
+                    $i = 0;
                     while (($data = fgetcsv($importFile, 0, ";")) !== false) {
+                        if ($i == 0) {
+                            $i++;
+                            continue;
+                        }
                         fputs($newFile, implode(";", array_map(function ($column) {
                             $column = str_replace('\\"', '"', $column);
                             $column = str_replace('"', '\"', $column);
